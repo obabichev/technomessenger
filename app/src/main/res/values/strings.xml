@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TechnoMessenger</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="nickname">nickname</string>
+    <string name="login">Login</string>
+    <string name="registration">Registration</string>
+    <string name="create_account">Create account</string>
+</resources>
