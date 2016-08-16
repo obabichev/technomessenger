@@ -8,7 +8,7 @@ import rx.Observable;
  * Created by olegchuikin on 12/08/16.
  */
 
-public interface SocketInteractor {
+public interface ResponseInteractor {
 
     Observable<Message> messagesObservable();
 

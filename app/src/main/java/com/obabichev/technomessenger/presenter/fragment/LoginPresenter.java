@@ -5,6 +5,7 @@ import android.util.Log;
 import com.obabichev.technomessenger.App;
 import com.obabichev.technomessenger.cleanmvp.presenter.fragment.BaseFragmentPresenter;
 import com.obabichev.technomessenger.interactor.RequestInteractor;
+import com.obabichev.technomessenger.model.enrollment.AuthRequest;
 import com.obabichev.technomessenger.model.enrollment.RegisterRequest;
 import com.obabichev.technomessenger.view.activity.MainView;
 import com.obabichev.technomessenger.view.fragment.LoginFragment;
@@ -43,13 +44,16 @@ public class LoginPresenter extends BaseFragmentPresenter<LoginFragment, MainVie
 
     private void startObservingViewEvents() {
 
-        observeClicks(view.getLoginButtonClicks(),
-                new Action1<Void>() {
-                    @Override
-                    public void call(Void aVoid) {
-                        //todo send login request
-                    }
-                });
+        observeClicks(view.getLoginButtonClicks(), new Action1<Void>() {
+            @Override
+            public void call(Void aVoid) {
+                AuthRequest authRequest = new AuthRequest();
+                authRequest.setLogin(view.getLogin());
+                authRequest.setPass(view.getPassword());
+
+                requestInteractor.sendMessage(authRequest);
+            }
+        });
 
         observeClicks(view.getRegisterButtonClicks(), new Action1<Void>() {
             @Override
@@ -58,11 +62,9 @@ public class LoginPresenter extends BaseFragmentPresenter<LoginFragment, MainVie
             }
         });
 
-        /*observeClicks(view.getCreateAccountButtonClicks(), new Action1<Void>() {
+        observeClicks(view.getCreateAccountButtonClicks(), new Action1<Void>() {
             @Override
             public void call(Void aVoid) {
-                Log.d(App.SOCKET_TAG, "Try to send request");
-
                 RegisterRequest request = new RegisterRequest();
                 request.setLogin(view.getLogin());
                 request.setPass(view.getPassword());
@@ -70,39 +72,12 @@ public class LoginPresenter extends BaseFragmentPresenter<LoginFragment, MainVie
 
                 requestInteractor.sendMessage(request);
             }
-        });*/
-
-        view.getCreateAccountButtonClicks()
-                .debounce(1, TimeUnit.SECONDS)
-                .subscribe(new Subscriber<Void>() {
-                    @Override
-                    public void onCompleted() {
-                        Log.d(App.SOCKET_TAG, "Create user complete");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(App.SOCKET_TAG, e.getMessage(), e);
-                    }
-
-                    @Override
-                    public void onNext(Void aVoid) {
-                        Log.d(App.SOCKET_TAG, "Try to send request");
-
-                        RegisterRequest request = new RegisterRequest();
-                        request.setLogin(view.getLogin());
-                        request.setPass(view.getPassword());
-                        request.setNick(view.getNickname());
-//
-                        requestInteractor.sendMessage(request);
-                    }
-                });
+        });
     }
 
     private void observeClicks(Observable<Void> clicksObservable, Action1<Void> onNextAction) {
         clicksObservable.debounce(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .observeOn(Schedulers.io())
                 .subscribe(onNextAction);
     }
 

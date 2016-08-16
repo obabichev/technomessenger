@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.obabichev.technomessenger.App;
 import com.obabichev.technomessenger.cleanmvp.presenter.fragment.BaseFragmentPresenter;
-import com.obabichev.technomessenger.interactor.SocketInteractor;
+import com.obabichev.technomessenger.interactor.ResponseInteractor;
 import com.obabichev.technomessenger.model.Message;
 import com.obabichev.technomessenger.model.WelcomeMessage;
 import com.obabichev.technomessenger.view.activity.MainView;
@@ -22,7 +22,7 @@ import rx.Subscription;
 public class SplashPresenter extends BaseFragmentPresenter<SplashView, MainView> {
 
     @Inject
-    SocketInteractor socketInteractor;
+    ResponseInteractor responseInteractor;
 
     private Subscription serverSubscription;
 
@@ -38,7 +38,8 @@ public class SplashPresenter extends BaseFragmentPresenter<SplashView, MainView>
     public void onResume() {
         super.onResume();
 
-        serverSubscription = socketInteractor.messagesObservable().subscribe(new Subscriber<Message>() {
+        serverSubscription = responseInteractor.messagesObservable().subscribe(new Subscriber<Message>() {
+
             @Override
             public void onCompleted() {
 

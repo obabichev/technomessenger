@@ -1,18 +1,7 @@
 package com.obabichev.technomessenger.presenter.activity;
 
-import android.util.Log;
-
-import com.obabichev.technomessenger.App;
-import com.obabichev.technomessenger.R;
-import com.obabichev.technomessenger.cleanmvp.presenter.BasePresenter;
 import com.obabichev.technomessenger.cleanmvp.presenter.activity.BaseActivityPresenter;
-import com.obabichev.technomessenger.cleanmvp.view.activity.ActivityView;
-import com.obabichev.technomessenger.interactor.SocketInteractorImpl;
-import com.obabichev.technomessenger.model.Message;
-import com.obabichev.technomessenger.model.WelcomeMessage;
 import com.obabichev.technomessenger.view.activity.MainView;
-
-import rx.Subscriber;
 
 /**
  * Created by olegchuikin on 11/08/16.

@@ -22,8 +22,8 @@ public class InteractorFactory {
 
     @Provides
     @Singleton
-    SocketInteractor createSocketInteractor(SocketProvider socketProvider){
-        return new SocketInteractorImpl(socketProvider);
+    ResponseInteractor createSocketInteractor(SocketProvider socketProvider){
+        return new ResponseInteractorImpl(socketProvider);
     }
 
 }

@@ -66,14 +66,6 @@ public class LoginFragment extends BaseFragment<LoginPresenter, MainView> implem
         return view;
     }
 
-    //todo del it later!
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        switchToCreateAccount();
-    }
-
     @Override
     protected LoginPresenter getPresenter() {
         return new LoginPresenter();
