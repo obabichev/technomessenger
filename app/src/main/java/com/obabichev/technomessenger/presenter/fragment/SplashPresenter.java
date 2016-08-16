@@ -38,6 +38,7 @@ public class SplashPresenter extends BaseFragmentPresenter<SplashView, MainView>
     public void onResume() {
         super.onResume();
 
+        Log.d(App.SOCKET_TAG, "Splash screen subscribe");
         serverSubscription = responseInteractor.messagesObservable().subscribe(new Subscriber<Message>() {
 
             @Override
@@ -57,6 +58,7 @@ public class SplashPresenter extends BaseFragmentPresenter<SplashView, MainView>
                 }
             }
         });
+        responseInteractor.messagesObservable().connect();
     }
 
     @Override

@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.observables.ConnectableObservable;
 import rx.schedulers.Schedulers;
 
 import static com.obabichev.technomessenger.App.SOCKET_TAG;
@@ -27,7 +28,7 @@ import static com.obabichev.technomessenger.App.SOCKET_TAG;
  */
 public class ResponseInteractorImpl implements ResponseInteractor {
 
-    private Observable<Message> messagesObservable;
+    private ConnectableObservable<Message> messagesObservable;
 
     private final Pattern jsonPattern = Pattern.compile("\\{[^\\{\\}]*\\{?[^\\{\\}]*\\}?[^\\{\\}]*\\}");
 
@@ -38,7 +39,7 @@ public class ResponseInteractorImpl implements ResponseInteractor {
     }
 
     @Override
-    public Observable<Message> messagesObservable() {
+    public ConnectableObservable<Message> messagesObservable() {
 
         if (messagesObservable == null) {
             messagesObservable = createObservableForSocket();
@@ -47,7 +48,7 @@ public class ResponseInteractorImpl implements ResponseInteractor {
     }
 
 
-    private Observable<Message> createObservableForSocket() {
+    private ConnectableObservable<Message> createObservableForSocket() {
 
         return Observable
                 .create(new Observable.OnSubscribe<Message>() {
@@ -64,6 +65,8 @@ public class ResponseInteractorImpl implements ResponseInteractor {
                                 if (readedBytesCount != -1) {
                                     for (String json : splitJsons(bytesToString(data, readedBytesCount))) {
                                         Message message = JsonConverterUtil.jsonToMessage(json);
+                                        Log.d(App.SOCKET_TAG, message.toString());
+                                        Log.d(App.SOCKET_TAG, "Send message to subscriber");
                                         subscriber.onNext(message);
                                     }
                                 }
@@ -76,7 +79,8 @@ public class ResponseInteractorImpl implements ResponseInteractor {
                     }
                 })
                 .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread())
+                .publish();
     }
 
     private String bytesToString(byte[] data, int length) throws IOException {

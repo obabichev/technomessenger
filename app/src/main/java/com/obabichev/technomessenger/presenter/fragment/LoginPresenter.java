@@ -5,9 +5,14 @@ import android.util.Log;
 import com.obabichev.technomessenger.App;
 import com.obabichev.technomessenger.cleanmvp.presenter.fragment.BaseFragmentPresenter;
 import com.obabichev.technomessenger.interactor.RequestInteractor;
+import com.obabichev.technomessenger.interactor.ResponseInteractor;
+import com.obabichev.technomessenger.model.Message;
+import com.obabichev.technomessenger.model.WelcomeMessage;
 import com.obabichev.technomessenger.model.enrollment.AuthRequest;
+import com.obabichev.technomessenger.model.enrollment.AuthResponse;
 import com.obabichev.technomessenger.model.enrollment.RegisterRequest;
 import com.obabichev.technomessenger.view.activity.MainView;
+import com.obabichev.technomessenger.view.fragment.ChatsListFragment;
 import com.obabichev.technomessenger.view.fragment.LoginFragment;
 
 import java.util.concurrent.TimeUnit;
@@ -16,9 +21,9 @@ import javax.inject.Inject;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by olegchuikin on 15/08/16.
@@ -28,6 +33,11 @@ public class LoginPresenter extends BaseFragmentPresenter<LoginFragment, MainVie
 
     @Inject
     RequestInteractor requestInteractor;
+
+    @Inject
+    ResponseInteractor responseInteractor;
+
+    private Subscription serverSubscription;
 
     @Override
     public void onCreate() {
@@ -40,6 +50,7 @@ public class LoginPresenter extends BaseFragmentPresenter<LoginFragment, MainVie
         super.onResume();
 
         startObservingViewEvents();
+        processServerMessages();
     }
 
     private void startObservingViewEvents() {
@@ -81,5 +92,33 @@ public class LoginPresenter extends BaseFragmentPresenter<LoginFragment, MainVie
                 .subscribe(onNextAction);
     }
 
+    private void processServerMessages(){
+        Log.d(App.SOCKET_TAG, "Server subscription on LoginScreen");
+        serverSubscription = responseInteractor.messagesObservable().subscribe(new Subscriber<Message>() {
 
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(App.SOCKET_TAG, e.getMessage(), e);
+            }
+
+            @Override
+            public void onNext(Message message) {
+                Log.d(App.SOCKET_TAG, "Received message in LoginScreen");
+                if (message instanceof AuthResponse) {
+                    view.switchToFragment(ChatsListFragment.class, null, true);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        serverSubscription.unsubscribe();
+    }
 }

@@ -3,6 +3,7 @@ package com.obabichev.technomessenger.interactor;
 import com.obabichev.technomessenger.model.Message;
 
 import rx.Observable;
+import rx.observables.ConnectableObservable;
 
 /**
  * Created by olegchuikin on 12/08/16.
@@ -10,6 +11,6 @@ import rx.Observable;
 
 public interface ResponseInteractor {
 
-    Observable<Message> messagesObservable();
+    ConnectableObservable<Message> messagesObservable();
 
 }
