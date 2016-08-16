@@ -1,10 +1,12 @@
 package com.obabichev.technomessenger.model.enrollment;
 
+import com.obabichev.technomessenger.model.Message;
+
 /**
  * Created by olegchuikin on 15/08/16.
  */
 
-public class RegisterResponse {
+public class RegisterResponse extends Message {
 
     int status;
 
@@ -24,5 +26,10 @@ public class RegisterResponse {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    @Override
+    public String getAction() {
+        return "register";
     }
 }

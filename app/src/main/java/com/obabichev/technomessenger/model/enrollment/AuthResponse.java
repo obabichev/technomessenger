@@ -1,10 +1,12 @@
 package com.obabichev.technomessenger.model.enrollment;
 
+import com.obabichev.technomessenger.model.Message;
+
 /**
  * Created by olegchuikin on 15/08/16.
  */
 
-public class AuthResponse {
+public class AuthResponse extends Message {
 
     int status;
 
@@ -44,5 +46,10 @@ public class AuthResponse {
 
     public void setCid(String cid) {
         this.cid = cid;
+    }
+
+    @Override
+    public String getAction() {
+        return "auth";
     }
 }

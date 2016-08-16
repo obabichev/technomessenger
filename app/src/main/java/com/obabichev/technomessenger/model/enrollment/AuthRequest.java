@@ -1,10 +1,12 @@
 package com.obabichev.technomessenger.model.enrollment;
 
+import com.obabichev.technomessenger.model.Message;
+
 /**
  * Created by olegchuikin on 15/08/16.
  */
 
-public class AuthRequest {
+public class AuthRequest extends Message {
 
     private String login;
 
@@ -24,5 +26,10 @@ public class AuthRequest {
 
     public void setPass(String pass) {
         this.pass = pass;
+    }
+
+    @Override
+    public String getAction() {
+        return "auth";
     }
 }

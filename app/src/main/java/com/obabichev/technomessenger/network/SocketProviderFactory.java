@@ -1,5 +1,7 @@
 package com.obabichev.technomessenger.network;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -11,7 +13,8 @@ import dagger.Provides;
 public class SocketProviderFactory {
 
     @Provides
-    public static SocketProvider createSocketProvider(){
+    @Singleton
+    public SocketProvider createSocketProvider(){
         return new SocketProviderImpl();
     }
 

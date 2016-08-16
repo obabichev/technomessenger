@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.obabichev.technomessenger.di.ApplicationComponent;
 import com.obabichev.technomessenger.di.DaggerApplicationComponent;
+import com.obabichev.technomessenger.interactor.InteractorFactory;
 import com.obabichev.technomessenger.network.SocketProviderFactory;
 
 /**
@@ -30,6 +31,8 @@ public class App extends Application {
 
     private ApplicationComponent buildComponent() {
         return DaggerApplicationComponent.builder()
+                .interactorFactory(new InteractorFactory())
+                .socketProviderFactory(new SocketProviderFactory())
                 .build();
     }
 

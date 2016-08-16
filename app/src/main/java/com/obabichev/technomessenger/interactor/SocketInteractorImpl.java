@@ -2,22 +2,20 @@ package com.obabichev.technomessenger.interactor;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.obabichev.technomessenger.App;
 import com.obabichev.technomessenger.model.Message;
-import com.obabichev.technomessenger.model.WelcomeMessage;
 import com.obabichev.technomessenger.network.SocketProvider;
+import com.obabichev.technomessenger.utils.JsonConverterUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
-
-import javax.inject.Inject;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static com.obabichev.technomessenger.App.SOCKET_TAG;
@@ -29,11 +27,10 @@ public class SocketInteractorImpl implements SocketInteractor {
 
     private Observable<Message> messagesObservable;
 
-    @Inject
-    SocketProvider socketProvider;
+    private SocketProvider socketProvider;
 
-    public SocketInteractorImpl() {
-        App.getComponent().inject(this);
+    public SocketInteractorImpl(SocketProvider socketProvider) {
+        this.socketProvider = socketProvider;
     }
 
     @Override
@@ -48,48 +45,61 @@ public class SocketInteractorImpl implements SocketInteractor {
 
     private Observable<Message> createObservableForSocket() {
 
-        return Observable.create(new Observable.OnSubscribe<Message>() {
-            @Override
-            public void call(Subscriber<? super Message> subscriber) {
-                try {
-                    Socket socket = socketProvider.getConnectionSocket();
+        Log.d(App.SOCKET_TAG, "Creage observable for socket");
 
-                    InputStream sin = socket.getInputStream();
+        return Observable
+                .create(new Observable.OnSubscribe<Message>() {
+                    @Override
+                    public void call(Subscriber<? super Message> subscriber) {
+                        try {
+                            InputStream sin = socketProvider.getConnectionSocket().getInputStream();
 
-                    try {
-                        byte[] data = new byte[32768];
-                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                            try {
+                                byte[] data = new byte[32768];
+                                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-                        while(true) {
-                            int readBytes = sin.read(data);
-                            if (readBytes != -1) {
-                                outputStream.write(data, 0, readBytes);
-                                outputStream.flush();
-                                String result = outputStream.toString("utf-8");
+                                while (true) {
+                                    int readBytes = sin.read(data);
+                                    if (readBytes != -1) {
+                                        Log.d(App.SOCKET_TAG, "Something was received");
+                                        outputStream.write(data, 0, readBytes);
+                                        outputStream.flush();
+                                        String result = outputStream.toString("utf-8");
 
-                                Log.d(SOCKET_TAG, result);
 
-                                WelcomeMessage message = new Gson().fromJson(result, WelcomeMessage.class);
+                                        Pattern p = Pattern.compile("\\{[^\\{\\}]*\\{?[^\\{\\}]*\\}?[^\\{\\}]*\\}");
+                                        Matcher m = p.matcher(result);
 
-                                /*try {
-                                    Thread.sleep(3000);
-                                } catch (InterruptedException e){
+                                        while (m.find()) {
+                                            Message message = JsonConverterUtil.jsonToMessage(m.group(0));
+                                            subscriber.onNext(message);
+                                        }
 
-                                }*/
-                                subscriber.onNext(message);
+//                                Log.d(SOCKET_TAG, "Message from server: " + result);
+                                    }
+                                }
+
+                            } catch (Exception e) {
+                                Log.d(App.SOCKET_TAG, "ERROR: " + e.getMessage());
+                                //todo do smth
                             }
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Log.d(SOCKET_TAG, "ERROR:" + e.getMessage());
                         }
 
-                    } catch (Exception e) {
-                        //todo do smth
-                    }
+                        try {
+                            socketProvider.getConnectionSocket().close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Log.d(SOCKET_TAG, "ERROR:" + e.getMessage());
-                }
-            }
-        }).subscribeOn(Schedulers.io());
+                        Log.d(App.SOCKET_TAG, "End of lestening");
+                    }
+                })
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
 }

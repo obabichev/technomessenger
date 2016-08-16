@@ -18,6 +18,7 @@ import com.obabichev.technomessenger.view.activity.MainView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observable;
+import rx.subjects.PublishSubject;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -27,7 +28,19 @@ import static com.jakewharton.rxbinding.view.RxView.clicks;
  * Created by olegchuikin on 15/08/16.
  */
 
-public class LoginScreenFragment extends BaseFragment<LoginPresenter, MainView> implements LoginScreenView {
+public class LoginFragment extends BaseFragment<LoginPresenter, MainView> implements LoginView {
+
+    @BindView(R.id.login_input)
+    EditText loginInput;
+
+    @BindView(R.id.password_input)
+    EditText passwordInput;
+
+    @BindView(R.id.nickname_text)
+    TextView nicknameTextView;
+
+    @BindView(R.id.nickname_input)
+    EditText nicknameInput;
 
     @BindView(R.id.login_button)
     Button loginButton;
@@ -38,12 +51,7 @@ public class LoginScreenFragment extends BaseFragment<LoginPresenter, MainView> 
     @BindView(R.id.create_account_button)
     Button createAccountButton;
 
-    @BindView(R.id.nickname_text)
-    TextView nicknameTextView;
-
-    @BindView(R.id.nickname_input)
-    EditText nicknameInput;
-
+    private PublishSubject<Void> backPressEvents;
 
     @NonNull
     @Override
@@ -53,7 +61,17 @@ public class LoginScreenFragment extends BaseFragment<LoginPresenter, MainView> 
 
         ButterKnife.bind(this, view);
 
+        backPressEvents = PublishSubject.create();
+
         return view;
+    }
+
+    //todo del it later!
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        switchToCreateAccount();
     }
 
     @Override
@@ -87,6 +105,11 @@ public class LoginScreenFragment extends BaseFragment<LoginPresenter, MainView> 
     }
 
     @Override
+    public PublishSubject<Void> backPressEvents() {
+        return backPressEvents;
+    }
+
+    @Override
     public void switchToCreateAccount() {
         loginButton.setVisibility(GONE);
         registrationButton.setVisibility(GONE);
@@ -94,5 +117,20 @@ public class LoginScreenFragment extends BaseFragment<LoginPresenter, MainView> 
         nicknameInput.setVisibility(VISIBLE);
         nicknameTextView.setVisibility(VISIBLE);
         createAccountButton.setVisibility(VISIBLE);
+    }
+
+    @Override
+    public String getLogin() {
+        return loginInput.getText().toString();
+    }
+
+    @Override
+    public String getPassword() {
+        return passwordInput.getText().toString();
+    }
+
+    @Override
+    public String getNickname() {
+        return nicknameInput.getText().toString();
     }
 }

@@ -4,7 +4,7 @@ package com.obabichev.technomessenger.model;
  * Created by olegchuikin on 12/08/16.
  */
 
-public class WelcomeMessage extends Message{
+public class WelcomeMessage extends Message {
 
     private String action;
 

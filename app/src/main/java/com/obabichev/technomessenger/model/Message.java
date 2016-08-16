@@ -6,7 +6,7 @@ import java.lang.reflect.Field;
  * Created by olegchuikin on 12/08/16.
  */
 
-public class Message {
+public abstract class Message {
 
     @Override
     public String toString() {
@@ -27,4 +27,6 @@ public class Message {
         }
         return sb.toString();
     }
+
+    public abstract String getAction();
 }

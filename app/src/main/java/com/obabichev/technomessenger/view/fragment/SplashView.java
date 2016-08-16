@@ -7,6 +7,6 @@ import com.obabichev.technomessenger.view.activity.MainView;
  * Created by olegchuikin on 11/08/16.
  */
 
-public interface SplashScreenFragment extends FragmentView<MainView> {
+public interface SplashView extends FragmentView<MainView> {
 
 }

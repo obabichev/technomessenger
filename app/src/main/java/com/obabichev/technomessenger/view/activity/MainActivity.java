@@ -9,21 +9,11 @@ import com.obabichev.technomessenger.App;
 import com.obabichev.technomessenger.R;
 import com.obabichev.technomessenger.cleanmvp.view.activity.BaseActivity;
 import com.obabichev.technomessenger.cleanmvp.view.fragment.BaseFragment;
-import com.obabichev.technomessenger.interactor.SocketInteractorImpl;
-import com.obabichev.technomessenger.model.Message;
 import com.obabichev.technomessenger.presenter.activity.MainPresenter;
-import com.obabichev.technomessenger.view.fragment.LoginScreenFragment;
+import com.obabichev.technomessenger.view.fragment.LoginFragment;
 import com.obabichev.technomessenger.view.fragment.SplashFragment;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import rx.Subscriber;
 
 public class MainActivity extends BaseActivity<MainPresenter> implements MainView {
 
@@ -48,11 +38,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
 
     @Override
     public void switchToLoginScreen() {
-        LoginScreenFragment fragment = new LoginScreenFragment();
+        Log.d(App.SOCKET_TAG, "Switch to login screen");
+        LoginFragment fragment = new LoginFragment();
         switchToScreen(fragment);
     }
 
-    private void switchToScreen(BaseFragment fragment){
+    private void switchToScreen(BaseFragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         fragmentManager.beginTransaction()

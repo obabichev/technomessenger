@@ -9,7 +9,7 @@ import com.obabichev.technomessenger.view.activity.MainView;
  * Created by olegchuikin on 11/08/16.
  */
 
-public class SplashFragment extends BaseFragment<SplashPresenter, MainView> {
+public class SplashFragment extends BaseFragment<SplashPresenter, MainView>  implements SplashView{
 
     @Override
     protected SplashPresenter getPresenter() {

@@ -24,26 +24,6 @@ public class MainPresenter extends BaseActivityPresenter<MainView> {
     public void onCreate() {
         super.onCreate();
 
-
-        new SocketInteractorImpl().messagesObservable().subscribe(new Subscriber<Message>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(Message message) {
-                if (message instanceof WelcomeMessage){
-                    view.switchToLoginScreen();
-                }
-                Log.d(App.SOCKET_TAG, message.toString());
-            }
-        });
     }
 
     @Override
@@ -54,4 +34,6 @@ public class MainPresenter extends BaseActivityPresenter<MainView> {
             view.switchToSplashScreen();
         }
     }
+
+
 }

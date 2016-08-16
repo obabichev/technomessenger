@@ -25,9 +25,10 @@ public class SocketProviderImpl implements SocketProvider {
     private Socket connect(){
         Log.d(SOCKET_TAG, "CONNECT");
         try {
-            return new Socket("10.22.114.113", 7777);
+            return new Socket("10.22.118.125", 7777);
         } catch (IOException e) {
             //todo we are not in the perfect world
+            Log.d(SOCKET_TAG, "ERROR: failed connection");
             e.printStackTrace();
         }
         return null;

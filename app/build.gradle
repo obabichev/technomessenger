@@ -37,6 +37,8 @@ dependencies {
     provided 'javax.annotation:jsr250-api:1.0'
 
     compile 'io.reactivex:rxjava:1.1.6'
+    compile 'io.reactivex:rxandroid:1.2.1'
+
 
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha5'
     compile group: 'com.google.code.gson', name: 'gson', version: '2.4'
