@@ -18,6 +18,7 @@ public class RequestInteractorImpl implements RequestInteractor {
 
     private SocketProvider socketProvider;
 
+
     public RequestInteractorImpl(SocketProvider socketProvider) {
         this.socketProvider = socketProvider;
     }
