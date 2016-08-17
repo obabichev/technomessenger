@@ -1,12 +1,12 @@
-package com.obabichev.technomessenger.model.enrollment;
+package com.obabichev.technomessenger.mapi.enrollment;
 
-import com.obabichev.technomessenger.model.Message;
+import com.obabichev.technomessenger.mapi.Request;
 
 /**
  * Created by olegchuikin on 15/08/16.
  */
 
-public class AuthRequest extends Message {
+public class AuthRequest extends Request {
 
     private String login;
 

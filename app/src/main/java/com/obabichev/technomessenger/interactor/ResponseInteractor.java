@@ -1,8 +1,7 @@
 package com.obabichev.technomessenger.interactor;
 
-import com.obabichev.technomessenger.model.Message;
+import com.obabichev.technomessenger.mapi.Response;
 
-import rx.Observable;
 import rx.observables.ConnectableObservable;
 
 /**
@@ -11,6 +10,6 @@ import rx.observables.ConnectableObservable;
 
 public interface ResponseInteractor {
 
-    ConnectableObservable<Message> messagesObservable();
+    ConnectableObservable<Response> messagesObservable();
 
 }

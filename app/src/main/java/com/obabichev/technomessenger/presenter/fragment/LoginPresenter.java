@@ -6,11 +6,10 @@ import com.obabichev.technomessenger.App;
 import com.obabichev.technomessenger.cleanmvp.presenter.fragment.BaseFragmentPresenter;
 import com.obabichev.technomessenger.interactor.RequestInteractor;
 import com.obabichev.technomessenger.interactor.ResponseInteractor;
-import com.obabichev.technomessenger.model.Message;
-import com.obabichev.technomessenger.model.WelcomeMessage;
-import com.obabichev.technomessenger.model.enrollment.AuthRequest;
-import com.obabichev.technomessenger.model.enrollment.AuthResponse;
-import com.obabichev.technomessenger.model.enrollment.RegisterRequest;
+import com.obabichev.technomessenger.mapi.Response;
+import com.obabichev.technomessenger.mapi.enrollment.AuthRequest;
+import com.obabichev.technomessenger.mapi.enrollment.AuthResponse;
+import com.obabichev.technomessenger.mapi.enrollment.RegisterRequest;
 import com.obabichev.technomessenger.view.activity.MainView;
 import com.obabichev.technomessenger.view.fragment.ChatsListFragment;
 import com.obabichev.technomessenger.view.fragment.LoginFragment;
@@ -94,7 +93,7 @@ public class LoginPresenter extends BaseFragmentPresenter<LoginFragment, MainVie
 
     private void processServerMessages(){
         Log.d(App.SOCKET_TAG, "Server subscription on LoginScreen");
-        serverSubscription = responseInteractor.messagesObservable().subscribe(new Subscriber<Message>() {
+        serverSubscription = responseInteractor.messagesObservable().subscribe(new Subscriber<Response>() {
 
             @Override
             public void onCompleted() {
@@ -106,9 +105,9 @@ public class LoginPresenter extends BaseFragmentPresenter<LoginFragment, MainVie
             }
 
             @Override
-            public void onNext(Message message) {
-                Log.d(App.SOCKET_TAG, "Received message in LoginScreen");
-                if (message instanceof AuthResponse) {
+            public void onNext(Response response) {
+                Log.d(App.SOCKET_TAG, "Received response in LoginScreen");
+                if (response instanceof AuthResponse) {
                     view.switchToFragment(ChatsListFragment.class, null, true);
                 }
             }

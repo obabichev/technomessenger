@@ -1,6 +1,6 @@
 package com.obabichev.technomessenger.interactor;
 
-import com.obabichev.technomessenger.model.Message;
+import com.obabichev.technomessenger.mapi.Request;
 
 /**
  * Created by olegchuikin on 15/08/16.
@@ -8,6 +8,6 @@ import com.obabichev.technomessenger.model.Message;
 
 public interface RequestInteractor {
 
-    void sendMessage(Message message);
+    void sendMessage(Request request);
 
 }

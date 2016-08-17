@@ -3,7 +3,7 @@ package com.obabichev.technomessenger.interactor;
 import android.util.Log;
 
 import com.obabichev.technomessenger.App;
-import com.obabichev.technomessenger.model.Message;
+import com.obabichev.technomessenger.mapi.Response;
 import com.obabichev.technomessenger.network.SocketProvider;
 import com.obabichev.technomessenger.utils.JsonConverterUtil;
 
@@ -28,7 +28,7 @@ import static com.obabichev.technomessenger.App.SOCKET_TAG;
  */
 public class ResponseInteractorImpl implements ResponseInteractor {
 
-    private ConnectableObservable<Message> messagesObservable;
+    private ConnectableObservable<Response> messagesObservable;
 
     private final Pattern jsonPattern = Pattern.compile("\\{[^\\{\\}]*\\{?[^\\{\\}]*\\}?[^\\{\\}]*\\}");
 
@@ -39,7 +39,7 @@ public class ResponseInteractorImpl implements ResponseInteractor {
     }
 
     @Override
-    public ConnectableObservable<Message> messagesObservable() {
+    public ConnectableObservable<Response> messagesObservable() {
 
         if (messagesObservable == null) {
             messagesObservable = createObservableForSocket();
@@ -48,12 +48,12 @@ public class ResponseInteractorImpl implements ResponseInteractor {
     }
 
 
-    private ConnectableObservable<Message> createObservableForSocket() {
+    private ConnectableObservable<Response> createObservableForSocket() {
 
         return Observable
-                .create(new Observable.OnSubscribe<Message>() {
+                .create(new Observable.OnSubscribe<Response>() {
                     @Override
-                    public void call(Subscriber<? super Message> subscriber) {
+                    public void call(Subscriber<? super Response> subscriber) {
                         try {
                             InputStream sin = socketProvider.getConnectionSocket().getInputStream();
 
@@ -64,10 +64,10 @@ public class ResponseInteractorImpl implements ResponseInteractor {
 
                                 if (readedBytesCount != -1) {
                                     for (String json : splitJsons(bytesToString(data, readedBytesCount))) {
-                                        Message message = JsonConverterUtil.jsonToMessage(json);
-                                        Log.d(App.SOCKET_TAG, message.toString());
-                                        Log.d(App.SOCKET_TAG, "Send message to subscriber");
-                                        subscriber.onNext(message);
+                                        Response response = JsonConverterUtil.jsonToMessage(json);
+                                        Log.d(App.SOCKET_TAG, response.toString());
+                                        Log.d(App.SOCKET_TAG, "Send response to subscriber");
+                                        subscriber.onNext(response);
                                     }
                                 }
                             }

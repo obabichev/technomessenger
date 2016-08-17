@@ -5,8 +5,8 @@ import android.util.Log;
 import com.obabichev.technomessenger.App;
 import com.obabichev.technomessenger.cleanmvp.presenter.fragment.BaseFragmentPresenter;
 import com.obabichev.technomessenger.interactor.ResponseInteractor;
-import com.obabichev.technomessenger.model.Message;
-import com.obabichev.technomessenger.model.WelcomeMessage;
+import com.obabichev.technomessenger.mapi.Response;
+import com.obabichev.technomessenger.mapi.WelcomeMessage;
 import com.obabichev.technomessenger.view.activity.MainView;
 import com.obabichev.technomessenger.view.fragment.SplashView;
 
@@ -39,7 +39,7 @@ public class SplashPresenter extends BaseFragmentPresenter<SplashView, MainView>
         super.onResume();
 
         Log.d(App.SOCKET_TAG, "Splash screen subscribe");
-        serverSubscription = responseInteractor.messagesObservable().subscribe(new Subscriber<Message>() {
+        serverSubscription = responseInteractor.messagesObservable().subscribe(new Subscriber<Response>() {
 
             @Override
             public void onCompleted() {
@@ -52,8 +52,8 @@ public class SplashPresenter extends BaseFragmentPresenter<SplashView, MainView>
             }
 
             @Override
-            public void onNext(Message message) {
-                if (message != null && message instanceof WelcomeMessage) {
+            public void onNext(Response response) {
+                if (response != null && response instanceof WelcomeMessage) {
                     view.getActivityView().switchToLoginScreen();
                 }
             }

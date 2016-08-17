@@ -7,11 +7,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.obabichev.technomessenger.App;
-import com.obabichev.technomessenger.model.Message;
-import com.obabichev.technomessenger.model.WelcomeMessage;
-import com.obabichev.technomessenger.model.enrollment.AuthRequest;
-import com.obabichev.technomessenger.model.enrollment.AuthResponse;
-import com.obabichev.technomessenger.model.enrollment.RegisterResponse;
+import com.obabichev.technomessenger.mapi.Request;
+import com.obabichev.technomessenger.mapi.Response;
+import com.obabichev.technomessenger.mapi.WelcomeMessage;
+import com.obabichev.technomessenger.mapi.channel.ChannelListResponse;
+import com.obabichev.technomessenger.mapi.channel.CreateChannelResponse;
+import com.obabichev.technomessenger.mapi.enrollment.AuthResponse;
+import com.obabichev.technomessenger.mapi.enrollment.RegisterResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,34 +28,25 @@ public class JsonConverterUtil {
     private final static String ACTION = "action";
     private final static String DATA = "data";
 
-    public static Message jsonToMessage(String source) {
-        Log.d(App.SOCKET_TAG, "Message from server: " + source);
+    public static Response jsonToMessage(String source) {
+        Log.d(App.SOCKET_TAG, "DomainObject from server: " + source);
         JsonParser parser = new JsonParser();
 
         JsonObject json = parser.parse(source).getAsJsonObject();
-
-        /*switch(json.get("action").getAsString()){
-            case "welcome":
-                return new Gson().fromJson(json, WelcomeMessage.class);
-            case "register":
-                return new Gson().fromJson(json.get("data"), RegisterResponse.class);
-        }*/
 
         if (json.get(ACTION).getAsString().equals("welcome")) {
             return new Gson().fromJson(json, WelcomeMessage.class);
         } else {
             Class clazz = actionsToMessageClass.get(json.get(ACTION).getAsString());
-            JsonElement jdata = json.get(DATA);
-            return (Message) new Gson().fromJson(jdata, clazz);
-//            return (Message) new Gson().fromJson(json.get(DATA), actionsToMessageClass.get(json.get(ACTION)));
+            return (Response) new Gson().fromJson(json.get(DATA), clazz);
         }
     }
 
-    public static String MessageToJson(Message message) {
+    public static String MessageToJson(Request request) {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("action", message.getAction());
+        jsonObject.addProperty("action", request.getAction());
 
-        JsonElement data = new Gson().toJsonTree(message);
+        JsonElement data = new Gson().toJsonTree(request);
         jsonObject.add("data", data);
         return jsonObject.toString();
     }
@@ -63,6 +56,8 @@ public class JsonConverterUtil {
 
         result.put("register", RegisterResponse.class);
         result.put("auth", AuthResponse.class);
+        result.put("channellist", ChannelListResponse.class);
+        result.put("createchannel", CreateChannelResponse.class);
 
         return result;
     }

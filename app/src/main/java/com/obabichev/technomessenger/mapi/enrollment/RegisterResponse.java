@@ -1,12 +1,12 @@
-package com.obabichev.technomessenger.model.enrollment;
+package com.obabichev.technomessenger.mapi.enrollment;
 
-import com.obabichev.technomessenger.model.Message;
+import com.obabichev.technomessenger.mapi.Response;
 
 /**
  * Created by olegchuikin on 15/08/16.
  */
 
-public class RegisterResponse extends Message {
+public class RegisterResponse extends Response {
 
     int status;
 

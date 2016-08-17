@@ -3,7 +3,7 @@ package com.obabichev.technomessenger.interactor;
 import android.util.Log;
 
 import com.obabichev.technomessenger.App;
-import com.obabichev.technomessenger.model.Message;
+import com.obabichev.technomessenger.mapi.Request;
 import com.obabichev.technomessenger.network.SocketProvider;
 import com.obabichev.technomessenger.utils.JsonConverterUtil;
 
@@ -24,10 +24,10 @@ public class RequestInteractorImpl implements RequestInteractor {
     }
 
     @Override
-    public void sendMessage(Message message) {
-        String json = JsonConverterUtil.MessageToJson(message);
+    public void sendMessage(Request request) {
+        String json = JsonConverterUtil.MessageToJson(request);
 
-        Log.d(App.SOCKET_TAG, "Send message: " + json);
+        Log.d(App.SOCKET_TAG, "Send request: " + json);
 
         try {
             sendJson(json);
@@ -42,6 +42,6 @@ public class RequestInteractorImpl implements RequestInteractor {
 
         out.write(json.getBytes(Charset.forName("UTF-8")));
         out.flush();
-        Log.d(App.SOCKET_TAG, "Message sended");
+        Log.d(App.SOCKET_TAG, "DomainObject sended");
     }
 }

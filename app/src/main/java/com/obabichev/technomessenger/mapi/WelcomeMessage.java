@@ -1,10 +1,10 @@
-package com.obabichev.technomessenger.model;
+package com.obabichev.technomessenger.mapi;
 
 /**
  * Created by olegchuikin on 12/08/16.
  */
 
-public class WelcomeMessage extends Message {
+public class WelcomeMessage extends Response {
 
     private String action;
 
