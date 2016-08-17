@@ -1,6 +1,7 @@
 package com.obabichev.technomessenger.presenter.fragment;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.obabichev.technomessenger.App;
 import com.obabichev.technomessenger.cleanmvp.presenter.fragment.BaseFragmentPresenter;
@@ -11,6 +12,7 @@ import com.obabichev.technomessenger.mapi.enrollment.AuthRequest;
 import com.obabichev.technomessenger.mapi.enrollment.AuthResponse;
 import com.obabichev.technomessenger.mapi.enrollment.RegisterRequest;
 import com.obabichev.technomessenger.presenter.activity.OnBackPressedListener;
+import com.obabichev.technomessenger.repository.UserRepository;
 import com.obabichev.technomessenger.view.activity.MainView;
 import com.obabichev.technomessenger.view.fragment.ChatsListFragment;
 import com.obabichev.technomessenger.view.fragment.LoginFragment;
@@ -36,6 +38,9 @@ public class LoginPresenter extends BaseFragmentPresenter<LoginFragment, MainVie
 
     @Inject
     ResponseInteractor responseInteractor;
+
+    @Inject
+    UserRepository userRepository;
 
     private Subscription serverSubscription;
 
@@ -67,6 +72,10 @@ public class LoginPresenter extends BaseFragmentPresenter<LoginFragment, MainVie
 
         getActivityView().setOnBackPressedListener(onBackPressedListener);
 
+        userRepository.extractUserCredentionals();
+        Log.d(App.SOCKET_TAG, "Saved user id:" + userRepository.getUserId());
+        Log.d(App.SOCKET_TAG, "Saved user password:" + userRepository.getUserPassword());
+
     }
 
     @Override
@@ -84,6 +93,8 @@ public class LoginPresenter extends BaseFragmentPresenter<LoginFragment, MainVie
                 AuthRequest authRequest = new AuthRequest();
                 authRequest.setLogin(view.getLogin());
                 authRequest.setPass(view.getPassword());
+
+                userRepository.setUserPassword(view.getPassword());
 
                 requestInteractor.sendMessage(authRequest);
             }
@@ -103,6 +114,8 @@ public class LoginPresenter extends BaseFragmentPresenter<LoginFragment, MainVie
                 request.setLogin(view.getLogin());
                 request.setPass(view.getPassword());
                 request.setNick(view.getNickname());
+
+                userRepository.setUserPassword(view.getPassword());
 
                 requestInteractor.sendMessage(request);
             }
@@ -132,6 +145,14 @@ public class LoginPresenter extends BaseFragmentPresenter<LoginFragment, MainVie
             public void onNext(Response response) {
                 Log.d(App.SOCKET_TAG, "Received response in LoginScreen");
                 if (response instanceof AuthResponse) {
+                    AuthResponse authResponse = (AuthResponse) response;
+                    if (authResponse.getStatus() != 0){
+                        Toast.makeText(view.getActivity(), "Auth: " + authResponse.getError(), Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    userRepository.setUserId(authResponse.getCid());
+                    userRepository.fixateUserCredentionals();
+                    App.sid = authResponse.getSid();
                     view.switchToFragment(ChatsListFragment.class, null, true);
                 }
             }

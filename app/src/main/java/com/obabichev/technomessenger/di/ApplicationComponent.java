@@ -6,6 +6,7 @@ import com.obabichev.technomessenger.interactor.ResponseInteractorImpl;
 import com.obabichev.technomessenger.network.SocketProviderFactory;
 import com.obabichev.technomessenger.presenter.fragment.LoginPresenter;
 import com.obabichev.technomessenger.presenter.fragment.SplashPresenter;
+import com.obabichev.technomessenger.repository.RepositoryFactory;
 
 import javax.inject.Singleton;
 
@@ -16,7 +17,7 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = {SocketProviderFactory.class, InteractorFactory.class})
+@Component(modules = {SocketProviderFactory.class, InteractorFactory.class, RepositoryFactory.class})
 public interface ApplicationComponent {
 
     void inject(ResponseInteractorImpl socketInteractor);
@@ -26,4 +27,5 @@ public interface ApplicationComponent {
     void inject(LoginPresenter loginPresenter);
 
     void inject(SplashPresenter splashPresenter);
+
 }

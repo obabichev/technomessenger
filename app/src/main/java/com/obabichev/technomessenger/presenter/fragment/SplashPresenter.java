@@ -4,10 +4,15 @@ import android.util.Log;
 
 import com.obabichev.technomessenger.App;
 import com.obabichev.technomessenger.cleanmvp.presenter.fragment.BaseFragmentPresenter;
+import com.obabichev.technomessenger.interactor.RequestInteractor;
 import com.obabichev.technomessenger.interactor.ResponseInteractor;
 import com.obabichev.technomessenger.mapi.Response;
 import com.obabichev.technomessenger.mapi.WelcomeMessage;
+import com.obabichev.technomessenger.mapi.enrollment.AuthRequest;
+import com.obabichev.technomessenger.mapi.enrollment.AuthResponse;
+import com.obabichev.technomessenger.repository.UserRepository;
 import com.obabichev.technomessenger.view.activity.MainView;
+import com.obabichev.technomessenger.view.fragment.ChatsListFragment;
 import com.obabichev.technomessenger.view.fragment.SplashView;
 
 import javax.inject.Inject;
@@ -23,6 +28,12 @@ public class SplashPresenter extends BaseFragmentPresenter<SplashView, MainView>
 
     @Inject
     ResponseInteractor responseInteractor;
+
+    @Inject
+    RequestInteractor requestInteractor;
+
+    @Inject
+    UserRepository userRepository;
 
     private Subscription serverSubscription;
 
@@ -54,13 +65,29 @@ public class SplashPresenter extends BaseFragmentPresenter<SplashView, MainView>
             @Override
             public void onNext(Response response) {
                 if (response != null && response instanceof WelcomeMessage) {
-                    view.getActivityView().switchToLoginScreen();
+                    if (userRepository.getUserId() != null){
+                        tryLogin();
+                    } else {
+                        view.getActivityView().switchToLoginScreen();
+                    }
+                }
+
+                if (response != null && response instanceof AuthResponse){
+                    App.sid = ((AuthResponse) response).getSid();
+                    view.switchToFragment(ChatsListFragment.class, null, false);
                 }
             }
         });
         responseInteractor.messagesObservable().connect();
 
         view.getActivityView().hideActionBar();
+    }
+
+    private void tryLogin(){
+        AuthRequest request = new AuthRequest();
+        request.setLogin(userRepository.getUserId());
+        request.setPass(userRepository.getUserPassword());
+        requestInteractor.sendMessage(request);
     }
 
     @Override
