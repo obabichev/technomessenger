@@ -5,7 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.obabichev.technomessenger.App;
 import com.obabichev.technomessenger.R;
