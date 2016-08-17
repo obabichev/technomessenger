@@ -13,4 +13,5 @@ public interface FragmentView<V extends ActivityView> {
     V getActivityView();
 
     FragmentView<V> getContainerFragmentView();
+
 }

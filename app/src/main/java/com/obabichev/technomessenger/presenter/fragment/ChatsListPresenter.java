@@ -10,4 +10,11 @@ import com.obabichev.technomessenger.view.fragment.SplashView;
  */
 
 public class ChatsListPresenter extends BaseFragmentPresenter<ChatsListView, MainView> {
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        view.getActivityView().showActionBar();
+    }
 }

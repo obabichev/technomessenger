@@ -10,6 +10,7 @@ import com.obabichev.technomessenger.mapi.Response;
 import com.obabichev.technomessenger.mapi.enrollment.AuthRequest;
 import com.obabichev.technomessenger.mapi.enrollment.AuthResponse;
 import com.obabichev.technomessenger.mapi.enrollment.RegisterRequest;
+import com.obabichev.technomessenger.presenter.activity.OnBackPressedListener;
 import com.obabichev.technomessenger.view.activity.MainView;
 import com.obabichev.technomessenger.view.fragment.ChatsListFragment;
 import com.obabichev.technomessenger.view.fragment.LoginFragment;
@@ -38,6 +39,17 @@ public class LoginPresenter extends BaseFragmentPresenter<LoginFragment, MainVie
 
     private Subscription serverSubscription;
 
+    private final OnBackPressedListener onBackPressedListener = new OnBackPressedListener() {
+        @Override
+        public boolean onBackPressed() {
+            if (!view.isLoginState()){
+                view.switchToLoginState();
+                return true;
+            }
+            return false;
+        }
+    };
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -50,6 +62,18 @@ public class LoginPresenter extends BaseFragmentPresenter<LoginFragment, MainVie
 
         startObservingViewEvents();
         processServerMessages();
+
+        view.getActivityView().hideActionBar();
+
+        getActivityView().setOnBackPressedListener(onBackPressedListener);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        getActivityView().unsetOnBackPressedListener();
     }
 
     private void startObservingViewEvents() {
@@ -68,7 +92,7 @@ public class LoginPresenter extends BaseFragmentPresenter<LoginFragment, MainVie
         observeClicks(view.getRegisterButtonClicks(), new Action1<Void>() {
             @Override
             public void call(Void aVoid) {
-                view.switchToCreateAccount();
+                view.switchToCreateAccountState();
             }
         });
 

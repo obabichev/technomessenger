@@ -53,6 +53,8 @@ public class LoginFragment extends BaseFragment<LoginPresenter, MainView> implem
 
     private PublishSubject<Void> backPressEvents;
 
+    private boolean isLoginState = true;
+
     @NonNull
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -102,13 +104,24 @@ public class LoginFragment extends BaseFragment<LoginPresenter, MainView> implem
     }
 
     @Override
-    public void switchToCreateAccount() {
-        loginButton.setVisibility(GONE);
-        registrationButton.setVisibility(GONE);
+    public void switchToCreateAccountState() {
+        isLoginState = false;
+        changeState(false);
+    }
 
-        nicknameInput.setVisibility(VISIBLE);
-        nicknameTextView.setVisibility(VISIBLE);
-        createAccountButton.setVisibility(VISIBLE);
+    @Override
+    public void switchToLoginState() {
+        isLoginState = true;
+        changeState(true);
+    }
+
+    private void changeState(boolean isLogin) {
+        loginButton.setVisibility(isLogin ? VISIBLE : GONE);
+        registrationButton.setVisibility(isLogin ? VISIBLE : GONE);
+
+        nicknameInput.setVisibility(isLogin ? GONE : VISIBLE);
+        nicknameTextView.setVisibility(isLogin ? GONE : VISIBLE);
+        createAccountButton.setVisibility(isLogin ? GONE : VISIBLE);
     }
 
     @Override
@@ -124,5 +137,10 @@ public class LoginFragment extends BaseFragment<LoginPresenter, MainView> implem
     @Override
     public String getNickname() {
         return nicknameInput.getText().toString();
+    }
+
+    @Override
+    public boolean isLoginState() {
+        return isLoginState;
     }
 }

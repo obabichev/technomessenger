@@ -3,6 +3,60 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/chat_icon"
+                android:layout_marginLeft="@dimen/new_channel_big_margin"
+                android:layout_marginTop="@dimen/new_channel_big_margin"
+                android:layout_marginRight="@dimen/new_channel_small_margin"/>
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/channel_name_input"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/new_channel_small_margin"
+                android:layout_marginTop="@dimen/new_channel_big_margin"
+                android:layout_marginRight="@dimen/new_channel_big_margin"
+                android:layout_marginBottom="@dimen/new_channel_small_margin"/>
+
+
+        </LinearLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/channel_description_input"
+            android:layout_marginLeft="@dimen/new_channel_big_margin"
+            android:layout_marginRight="@dimen/new_channel_big_margin"
+            android:layout_marginTop="@dimen/new_channel_small_margin"
+            android:layout_marginBottom="@dimen/new_channel_small_margin"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/channel_description_text"
+            android:layout_marginLeft="@dimen/new_channel_big_margin"
+            android:layout_marginRight="@dimen/new_channel_big_margin"
+            android:layout_marginTop="@dimen/new_channel_small_margin"
+            android:layout_marginBottom="@dimen/new_channel_big_margin"/>
+
+    </LinearLayout>
+
     <TextView
         android:text="CHATS!"
         android:gravity="center"

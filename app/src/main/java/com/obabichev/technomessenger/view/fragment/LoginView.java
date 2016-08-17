@@ -21,12 +21,16 @@ public interface LoginView extends FragmentView<MainView> {
     PublishSubject<Void> backPressEvents();
 
 
-    void switchToCreateAccount();
+    void switchToCreateAccountState();
+
+    void switchToLoginState();
 
     String getLogin();
 
     String getPassword();
 
     String getNickname();
+
+    boolean isLoginState();
 
 }

@@ -59,6 +59,8 @@ public class SplashPresenter extends BaseFragmentPresenter<SplashView, MainView>
             }
         });
         responseInteractor.messagesObservable().connect();
+
+        view.getActivityView().hideActionBar();
     }
 
     @Override

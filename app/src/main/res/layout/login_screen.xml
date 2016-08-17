@@ -24,6 +24,7 @@
                 android:id="@+id/login_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="r"
                 android:ems="10"
                 android:inputType="textEmailAddress" />
 
@@ -37,6 +38,7 @@
                 android:id="@+id/password_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="r"
                 android:ems="10"
                 android:inputType="textPassword" />
 
@@ -52,6 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:text="r"
                 android:inputType="textPersonName"
                 android:visibility="gone" />
 

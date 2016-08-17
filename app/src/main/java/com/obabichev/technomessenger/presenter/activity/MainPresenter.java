@@ -1,5 +1,8 @@
 package com.obabichev.technomessenger.presenter.activity;
 
+import android.widget.Toolbar;
+
+import com.obabichev.technomessenger.R;
 import com.obabichev.technomessenger.cleanmvp.presenter.activity.BaseActivityPresenter;
 import com.obabichev.technomessenger.view.activity.MainView;
 
@@ -8,6 +11,8 @@ import com.obabichev.technomessenger.view.activity.MainView;
  */
 
 public class MainPresenter extends BaseActivityPresenter<MainView> {
+
+    private OnBackPressedListener onBackPressedListener;
 
     @Override
     public void onCreate() {
@@ -23,6 +28,4 @@ public class MainPresenter extends BaseActivityPresenter<MainView> {
             view.switchToSplashScreen();
         }
     }
-
-
 }
