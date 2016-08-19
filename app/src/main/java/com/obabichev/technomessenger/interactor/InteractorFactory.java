@@ -16,14 +16,25 @@ public class InteractorFactory {
 
     @Provides
     @Singleton
+    public ChannelInteractor createChannelInteractor(){
+        return new ChannelInteractorImpl();
+    }
+
+    @Provides
+    @Singleton
     public RequestInteractor createRequestInteractor(SocketProvider socketProvider){
         return new RequestInteractorImpl(socketProvider);
     }
 
     @Provides
     @Singleton
-    ResponseInteractor createSocketInteractor(SocketProvider socketProvider){
+    ResponseInteractor createResponseInteractor(SocketProvider socketProvider){
         return new ResponseInteractorImpl(socketProvider);
     }
 
+    @Provides
+    @Singleton
+    EnrollmentInteractor createEnrollmentInteractor(){
+        return new EnrollmentInteractorImpl();
+    }
 }

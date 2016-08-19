@@ -1,7 +1,10 @@
 package com.obabichev.technomessenger.view.fragment;
 
 import com.obabichev.technomessenger.cleanmvp.view.fragment.FragmentView;
+import com.obabichev.technomessenger.model.Channel;
 import com.obabichev.technomessenger.view.activity.MainView;
+
+import java.util.List;
 
 import rx.Observable;
 import rx.subjects.PublishSubject;
@@ -10,7 +13,7 @@ import rx.subjects.PublishSubject;
  * Created by olegchuikin on 16/08/16.
  */
 
-public interface ChatsListView extends FragmentView<MainView> {
+public interface ChannelsListView extends FragmentView<MainView> {
 
     PublishSubject<Void> getAddMenuItemClicks();
 
@@ -21,6 +24,8 @@ public interface ChatsListView extends FragmentView<MainView> {
     void switchToChannelsListState();
 
     boolean isCreateNewChannelState();
+
+    void showChannelsList(List<Channel> channels);
 
 
     String getChannelname();

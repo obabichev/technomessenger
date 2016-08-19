@@ -29,7 +29,7 @@ public class JsonConverterUtil {
     private final static String DATA = "data";
 
     public static Response jsonToMessage(String source) {
-        Log.d(App.SOCKET_TAG, "DomainObject from server: " + source);
+        Log.d(App.FILTER_TAG, "DomainObject from server: " + source);
         JsonParser parser = new JsonParser();
 
         JsonObject json = parser.parse(source).getAsJsonObject();

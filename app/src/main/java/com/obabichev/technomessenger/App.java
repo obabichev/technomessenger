@@ -14,7 +14,7 @@ import com.obabichev.technomessenger.repository.RepositoryFactory;
 
 public class App extends Application {
 
-    public static final String SOCKET_TAG = "SOCKET_CONNECTION";
+    public static final String FILTER_TAG = "SOCKET_CONNECTION";
 
     private static ApplicationComponent component;
 

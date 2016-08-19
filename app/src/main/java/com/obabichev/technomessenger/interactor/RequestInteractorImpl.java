@@ -27,7 +27,7 @@ public class RequestInteractorImpl implements RequestInteractor {
     public void sendMessage(Request request) {
         String json = JsonConverterUtil.MessageToJson(request);
 
-        Log.d(App.SOCKET_TAG, "Send request: " + json);
+        Log.d(App.FILTER_TAG, "Send request: " + json);
 
         try {
             sendJson(json);
@@ -42,6 +42,6 @@ public class RequestInteractorImpl implements RequestInteractor {
 
         out.write(json.getBytes(Charset.forName("UTF-8")));
         out.flush();
-        Log.d(App.SOCKET_TAG, "DomainObject sended");
+        Log.d(App.FILTER_TAG, "DomainObject sended");
     }
 }

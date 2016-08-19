@@ -3,7 +3,8 @@ package com.obabichev.technomessenger.view.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,15 +12,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.obabichev.technomessenger.App;
 import com.obabichev.technomessenger.R;
 import com.obabichev.technomessenger.cleanmvp.view.fragment.BaseFragment;
-import com.obabichev.technomessenger.presenter.fragment.ChatsListPresenter;
+import com.obabichev.technomessenger.model.Channel;
+import com.obabichev.technomessenger.presenter.fragment.ChannelsListPresenter;
 import com.obabichev.technomessenger.view.activity.MainView;
+import com.obabichev.technomessenger.view.adapter.ChannelsAdapter;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observable;
 import rx.subjects.PublishSubject;
 
 import static android.view.View.GONE;
@@ -29,10 +32,13 @@ import static android.view.View.VISIBLE;
  * Created by olegchuikin on 16/08/16.
  */
 
-public class ChatsListFragment extends BaseFragment<ChatsListPresenter, MainView> implements ChatsListView {
+public class ChannelsListFragment extends BaseFragment<ChannelsListPresenter, MainView> implements ChannelsListView {
 
     @BindView(R.id.new_channel_section)
     View newChannelSection;
+
+    @BindView(R.id.channels_list)
+    RecyclerView channelListRecyclerView;
 
     private MenuItem addMenuItem;
 
@@ -45,8 +51,8 @@ public class ChatsListFragment extends BaseFragment<ChatsListPresenter, MainView
     private boolean isCreateNewChannelState;
 
     @Override
-    protected ChatsListPresenter getPresenter() {
-        return new ChatsListPresenter();
+    protected ChannelsListPresenter getPresenter() {
+        return new ChannelsListPresenter();
     }
 
     @Override
@@ -82,6 +88,9 @@ public class ChatsListFragment extends BaseFragment<ChatsListPresenter, MainView
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         ButterKnife.bind(this, view);
+
+        channelListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -130,6 +139,12 @@ public class ChatsListFragment extends BaseFragment<ChatsListPresenter, MainView
     @Override
     public boolean isCreateNewChannelState() {
         return isCreateNewChannelState;
+    }
+
+    @Override
+    public void showChannelsList(List<Channel> channels) {
+        ChannelsAdapter channelsAdapter = new ChannelsAdapter(channels);
+        channelListRecyclerView.setAdapter(channelsAdapter);
     }
 
     @Override

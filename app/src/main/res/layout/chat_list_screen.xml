@@ -58,21 +58,21 @@
 
     </LinearLayout>
 
-    <TextView
-        android:text="CHATS!"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/chats_list"
+            android:id="@+id/channels_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </android.support.v7.widget.RecyclerView>
     </ScrollView>
+
+    <TextView
+        android:text="CHATS!"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
