@@ -1,4 +1,4 @@
-package com.obabichev.technomessenger.interactor;
+package com.obabichev.technomessenger.service;
 
 import com.obabichev.technomessenger.mapi.Request;
 
@@ -6,7 +6,7 @@ import com.obabichev.technomessenger.mapi.Request;
  * Created by olegchuikin on 15/08/16.
  */
 
-public interface RequestInteractor {
+public interface RequestService {
 
     void sendMessage(Request request);
 

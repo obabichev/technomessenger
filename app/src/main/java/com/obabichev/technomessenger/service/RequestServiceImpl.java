@@ -1,4 +1,4 @@
-package com.obabichev.technomessenger.interactor;
+package com.obabichev.technomessenger.service;
 
 import android.util.Log;
 
@@ -14,12 +14,12 @@ import java.nio.charset.Charset;
 /**
  * Created by olegchuikin on 15/08/16.
  */
-public class RequestInteractorImpl implements RequestInteractor {
+public class RequestServiceImpl implements RequestService {
 
     private SocketProvider socketProvider;
 
 
-    public RequestInteractorImpl(SocketProvider socketProvider) {
+    public RequestServiceImpl(SocketProvider socketProvider) {
         this.socketProvider = socketProvider;
     }
 

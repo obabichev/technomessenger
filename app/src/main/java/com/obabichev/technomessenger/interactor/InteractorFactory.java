@@ -1,6 +1,10 @@
 package com.obabichev.technomessenger.interactor;
 
 import com.obabichev.technomessenger.network.SocketProvider;
+import com.obabichev.technomessenger.service.RequestService;
+import com.obabichev.technomessenger.service.RequestServiceImpl;
+import com.obabichev.technomessenger.service.ResponseService;
+import com.obabichev.technomessenger.service.ResponseServiceImpl;
 
 import javax.inject.Singleton;
 
@@ -16,25 +20,13 @@ public class InteractorFactory {
 
     @Provides
     @Singleton
-    public ChannelInteractor createChannelInteractor(){
+    ChannelInteractor createChannelInteractor() {
         return new ChannelInteractorImpl();
     }
 
     @Provides
     @Singleton
-    public RequestInteractor createRequestInteractor(SocketProvider socketProvider){
-        return new RequestInteractorImpl(socketProvider);
-    }
-
-    @Provides
-    @Singleton
-    ResponseInteractor createResponseInteractor(SocketProvider socketProvider){
-        return new ResponseInteractorImpl(socketProvider);
-    }
-
-    @Provides
-    @Singleton
-    EnrollmentInteractor createEnrollmentInteractor(){
+    EnrollmentInteractor createEnrollmentInteractor() {
         return new EnrollmentInteractorImpl();
     }
 }

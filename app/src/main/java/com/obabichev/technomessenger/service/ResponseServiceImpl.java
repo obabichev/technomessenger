@@ -1,4 +1,4 @@
-package com.obabichev.technomessenger.interactor;
+package com.obabichev.technomessenger.service;
 
 import android.util.Log;
 
@@ -30,7 +30,7 @@ import static com.obabichev.technomessenger.App.FILTER_TAG;
 /**
  * Created by olegchuikin on 12/08/16.
  */
-public class ResponseInteractorImpl implements ResponseInteractor {
+public class ResponseServiceImpl implements ResponseService {
 
     private ConnectableObservable<Response> messagesObservable;
 
@@ -38,7 +38,7 @@ public class ResponseInteractorImpl implements ResponseInteractor {
 
     private Map<Class, PublishSubject<Object>> publishSubjectMap;
 
-    public ResponseInteractorImpl(SocketProvider socketProvider) {
+    public ResponseServiceImpl(SocketProvider socketProvider) {
         this.socketProvider = socketProvider;
 
         publishSubjectMap = new HashMap<>();

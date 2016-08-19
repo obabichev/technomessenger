@@ -1,15 +1,15 @@
 package com.obabichev.technomessenger.interactor;
 
-import com.google.gson.internal.ObjectConstructor;
 import com.obabichev.technomessenger.App;
 import com.obabichev.technomessenger.mapi.ErrorCodeFromServerException;
 import com.obabichev.technomessenger.mapi.enrollment.AuthRequest;
 import com.obabichev.technomessenger.mapi.enrollment.AuthResponse;
 import com.obabichev.technomessenger.mapi.enrollment.RegisterRequest;
-import com.obabichev.technomessenger.mapi.enrollment.RegisterResponse;
 import com.obabichev.technomessenger.model.LoginCredentionals;
 import com.obabichev.technomessenger.model.RegisterCredentionals;
 import com.obabichev.technomessenger.repository.UserRepository;
+import com.obabichev.technomessenger.service.RequestService;
+import com.obabichev.technomessenger.service.ResponseService;
 
 import javax.inject.Inject;
 
@@ -24,10 +24,10 @@ import static com.obabichev.technomessenger.mapi.ResponseCodes.ErrOK;
 public class EnrollmentInteractorImpl implements EnrollmentInteractor {
 
     @Inject
-    RequestInteractor requestInteractor;
+    RequestService requestService;
 
     @Inject
-    ResponseInteractor responseInteractor;
+    ResponseService responseService;
 
     @Inject
     UserRepository userRepository;
@@ -39,7 +39,7 @@ public class EnrollmentInteractorImpl implements EnrollmentInteractor {
     @Override
     public Observable<Void> register(RegisterCredentionals credentionals) {
 
-        /*Observable<Void> result = responseInteractor.getSubjectForResponses(RegisterResponse.class)
+        /*Observable<Void> result = responseService.getSubjectForResponses(RegisterResponse.class)
                 .flatMap(new Func1<RegisterResponse, Observable<Void>>() {
                     @Override
                     public Observable<Void> call(RegisterResponse registerResponse) {
@@ -48,7 +48,7 @@ public class EnrollmentInteractorImpl implements EnrollmentInteractor {
                     }
                 });*/
 
-        Observable<Void> result = responseInteractor.getSubjectForResponses(AuthResponse.class)
+        Observable<Void> result = responseService.getSubjectForResponses(AuthResponse.class)
                 .flatMap(new Func1<AuthResponse, Observable<Void>>() {
                     @Override
                     public Observable<Void> call(AuthResponse authResponse) {
@@ -66,14 +66,14 @@ public class EnrollmentInteractorImpl implements EnrollmentInteractor {
         userRepository.setUserId(credentionals.getCid());
         userRepository.setUserPassword(credentionals.getPassword());
 
-        requestInteractor.sendMessage(request);
+        requestService.sendMessage(request);
         return result;
     }
 
     @Override
     public Observable<Void> login(LoginCredentionals credentionals) {
 
-        Observable<Void> result = responseInteractor.getSubjectForResponses(AuthResponse.class)
+        Observable<Void> result = responseService.getSubjectForResponses(AuthResponse.class)
                 .flatMap(new Func1<AuthResponse, Observable<Void>>() {
                     @Override
                     public Observable<Void> call(AuthResponse authResponse) {
@@ -95,7 +95,7 @@ public class EnrollmentInteractorImpl implements EnrollmentInteractor {
         userRepository.setUserId(credentionals.getCid());
         userRepository.setUserPassword(credentionals.getPassword());
 
-        requestInteractor.sendMessage(request);
+        requestService.sendMessage(request);
 
         return result;
     }

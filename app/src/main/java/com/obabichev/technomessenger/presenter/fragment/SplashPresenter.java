@@ -5,8 +5,8 @@ import android.util.Log;
 import com.obabichev.technomessenger.App;
 import com.obabichev.technomessenger.cleanmvp.presenter.fragment.BaseFragmentPresenter;
 import com.obabichev.technomessenger.interactor.EnrollmentInteractor;
-import com.obabichev.technomessenger.interactor.RequestInteractor;
-import com.obabichev.technomessenger.interactor.ResponseInteractor;
+import com.obabichev.technomessenger.service.RequestService;
+import com.obabichev.technomessenger.service.ResponseService;
 import com.obabichev.technomessenger.mapi.WelcomeMessage;
 import com.obabichev.technomessenger.view.activity.MainView;
 import com.obabichev.technomessenger.view.fragment.ChannelsListFragment;
@@ -25,10 +25,10 @@ import rx.functions.Action1;
 public class SplashPresenter extends BaseFragmentPresenter<SplashView, MainView> {
 
     @Inject
-    ResponseInteractor responseInteractor;
+    ResponseService responseService;
 
     @Inject
-    RequestInteractor requestInteractor;
+    RequestService requestService;
 
     @Inject
     EnrollmentInteractor enrollmentInteractor;
@@ -47,7 +47,7 @@ public class SplashPresenter extends BaseFragmentPresenter<SplashView, MainView>
         super.onResume();
 
 
-        welcomeSubscription = responseInteractor.getSubjectForResponses(WelcomeMessage.class)
+        welcomeSubscription = responseService.getSubjectForResponses(WelcomeMessage.class)
                 .subscribe(new Action1<WelcomeMessage>() {
                     @Override
                     public void call(WelcomeMessage welcomeMessage) {
@@ -75,7 +75,7 @@ public class SplashPresenter extends BaseFragmentPresenter<SplashView, MainView>
                     }
                 });
 
-        responseInteractor.messagesObservable().connect();
+        responseService.messagesObservable().connect();
 
         view.getActivityView().hideActionBar();
     }

@@ -8,6 +8,8 @@ import com.obabichev.technomessenger.mapi.channel.ChannelListRequest;
 import com.obabichev.technomessenger.mapi.channel.ChannelListResponse;
 import com.obabichev.technomessenger.model.Channel;
 import com.obabichev.technomessenger.repository.UserRepository;
+import com.obabichev.technomessenger.service.RequestService;
+import com.obabichev.technomessenger.service.ResponseService;
 
 import java.util.List;
 
@@ -22,10 +24,10 @@ import rx.functions.Func1;
 public class ChannelInteractorImpl implements ChannelInteractor {
 
     @Inject
-    RequestInteractor requestInteractor;
+    RequestService requestService;
 
     @Inject
-    ResponseInteractor responseInteractor;
+    ResponseService responseService;
 
     @Inject
     UserRepository userRepository;
@@ -43,7 +45,7 @@ public class ChannelInteractorImpl implements ChannelInteractor {
             return Observable.just(channels);
         }
 
-        Observable<List<Channel>> result = responseInteractor.messagesObservable().filter(new Func1<Response, Boolean>() {
+        Observable<List<Channel>> result = responseService.messagesObservable().filter(new Func1<Response, Boolean>() {
             @Override
             public Boolean call(Response response) {
                 return response instanceof ChannelListResponse;
@@ -63,7 +65,7 @@ public class ChannelInteractorImpl implements ChannelInteractor {
         ChannelListRequest request = new ChannelListRequest();
         request.setCid(userRepository.getUserId());
         request.setSid(App.sid);
-        requestInteractor.sendMessage(request);
+        requestService.sendMessage(request);
 
         return result;
     }

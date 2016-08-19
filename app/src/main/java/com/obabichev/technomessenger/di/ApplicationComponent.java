@@ -1,17 +1,16 @@
 package com.obabichev.technomessenger.di;
 
-import com.obabichev.technomessenger.interactor.ChannelInteractor;
 import com.obabichev.technomessenger.interactor.ChannelInteractorImpl;
 import com.obabichev.technomessenger.interactor.EnrollmentInteractorImpl;
 import com.obabichev.technomessenger.interactor.InteractorFactory;
-import com.obabichev.technomessenger.interactor.RequestInteractor;
-import com.obabichev.technomessenger.interactor.RequestInteractorImpl;
-import com.obabichev.technomessenger.interactor.ResponseInteractorImpl;
+import com.obabichev.technomessenger.service.RequestServiceImpl;
+import com.obabichev.technomessenger.service.ResponseServiceImpl;
 import com.obabichev.technomessenger.network.SocketProviderFactory;
 import com.obabichev.technomessenger.presenter.fragment.ChannelsListPresenter;
 import com.obabichev.technomessenger.presenter.fragment.LoginPresenter;
 import com.obabichev.technomessenger.presenter.fragment.SplashPresenter;
 import com.obabichev.technomessenger.repository.RepositoryFactory;
+import com.obabichev.technomessenger.service.ServiceFactory;
 
 import javax.inject.Singleton;
 
@@ -22,12 +21,17 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = {SocketProviderFactory.class, InteractorFactory.class, RepositoryFactory.class})
+@Component(modules = {
+        SocketProviderFactory.class,
+        InteractorFactory.class,
+        RepositoryFactory.class,
+        ServiceFactory.class
+})
 public interface ApplicationComponent {
 
-    void inject(ResponseInteractorImpl socketInteractor);
+    void inject(ResponseServiceImpl socketInteractor);
 
-    void inject(RequestInteractorImpl requestInteractor);
+    void inject(RequestServiceImpl requestInteractor);
 
     void inject(LoginPresenter loginPresenter);
 

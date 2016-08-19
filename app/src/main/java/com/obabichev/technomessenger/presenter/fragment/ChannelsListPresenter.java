@@ -5,8 +5,8 @@ import android.util.Log;
 import com.obabichev.technomessenger.App;
 import com.obabichev.technomessenger.cleanmvp.presenter.fragment.BaseFragmentPresenter;
 import com.obabichev.technomessenger.interactor.ChannelInteractor;
-import com.obabichev.technomessenger.interactor.RequestInteractor;
-import com.obabichev.technomessenger.interactor.ResponseInteractor;
+import com.obabichev.technomessenger.service.RequestService;
+import com.obabichev.technomessenger.service.ResponseService;
 import com.obabichev.technomessenger.mapi.channel.ChannelListRequest;
 import com.obabichev.technomessenger.model.Channel;
 import com.obabichev.technomessenger.presenter.activity.OnBackPressedListener;
@@ -27,10 +27,10 @@ import rx.functions.Action1;
 public class ChannelsListPresenter extends BaseFragmentPresenter<ChannelsListView, MainView> {
 
     @Inject
-    RequestInteractor requestInteractor;
+    RequestService requestService;
 
     @Inject
-    ResponseInteractor responseInteractor;
+    ResponseService responseService;
 
     @Inject
     ChannelInteractor channelInteractor;
@@ -81,7 +81,7 @@ public class ChannelsListPresenter extends BaseFragmentPresenter<ChannelsListVie
         ChannelListRequest request = new ChannelListRequest();
         request.setCid(userRepository.getUserId());
         request.setSid(App.sid);
-        requestInteractor.sendMessage(request);
+        requestService.sendMessage(request);
     }
 
     @Override
