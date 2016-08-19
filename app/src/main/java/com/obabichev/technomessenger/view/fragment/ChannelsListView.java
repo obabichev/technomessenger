@@ -30,7 +30,7 @@ public interface ChannelsListView extends FragmentView<MainView> {
     void addChannelToList(Channel channel);
 
 
-    String getChannelname();
+    String getChannelName();
 
     String getChannelDescription();
 

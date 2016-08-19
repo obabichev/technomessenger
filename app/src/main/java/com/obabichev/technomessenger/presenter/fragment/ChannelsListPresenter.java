@@ -66,17 +66,9 @@ public class ChannelsListPresenter extends BaseFragmentPresenter<ChannelsListVie
 
         startObservingViewEvents();
 
-        channelInteractor.getChannels().subscribe(new Action1<List<Channel>>() {
-            @Override
-            public void call(List<Channel> channels) {
-                view.showChannelsList(channels);
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                Log.d(App.FILTER_TAG, throwable.getMessage());
-            }
-        });
+        channelInteractor.getChannels()
+                .subscribe((channels) -> view.showChannelsList(channels),
+                        (throwable -> Log.d(App.FILTER_TAG, throwable.getMessage())));
     }
 
     private void sendChannelsListRequest() {
@@ -106,7 +98,7 @@ public class ChannelsListPresenter extends BaseFragmentPresenter<ChannelsListVie
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        channelInteractor.createChannel(view.getChannelname(), view.getChannelDescription())
+                        channelInteractor.createChannel(view.getChannelName(), view.getChannelDescription())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new Action1<Channel>() {
                                     @Override

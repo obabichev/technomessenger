@@ -168,7 +168,7 @@ public class ChannelsListFragment extends BaseFragment<ChannelsListPresenter, Ma
     }
 
     @Override
-    public String getChannelname() {
+    public String getChannelName() {
         return channelNameInput.getText().toString();
     }
 
