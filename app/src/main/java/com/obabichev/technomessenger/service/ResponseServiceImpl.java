@@ -80,9 +80,8 @@ public class ResponseServiceImpl implements ResponseService {
 
                                 String json = bytesToString(data, readedBytesCount);
                                 if (json.endsWith("}")) {
+                                    Log.d(App.FILTER_TAG, "MESSAGE FROM SERVER: " + json);
                                     Response response = JsonConverterUtil.jsonToMessage(json);
-                                    Log.d(App.FILTER_TAG, response.toString());
-                                    Log.d(App.FILTER_TAG, "Send response to subscriber");
                                     publishSubjectMap.get(response.getClass()).onNext(response);
                                     subscriber.onNext(response);
                                 }

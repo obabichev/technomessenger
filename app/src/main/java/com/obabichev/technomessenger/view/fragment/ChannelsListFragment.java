@@ -5,13 +5,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
+import com.obabichev.technomessenger.App;
 import com.obabichev.technomessenger.R;
 import com.obabichev.technomessenger.cleanmvp.view.fragment.BaseFragment;
 import com.obabichev.technomessenger.model.Channel;
@@ -23,6 +26,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.subjects.PublishSubject;
 
 import static android.view.View.GONE;
@@ -40,6 +44,12 @@ public class ChannelsListFragment extends BaseFragment<ChannelsListPresenter, Ma
     @BindView(R.id.channels_list)
     RecyclerView channelListRecyclerView;
 
+    @BindView(R.id.channel_name_input)
+    EditText channelNameInput;
+
+    @BindView(R.id.channel_description_input)
+    EditText channelDescriptionInput;
+
     private MenuItem addMenuItem;
 
     private MenuItem completeMenuItem;
@@ -49,6 +59,8 @@ public class ChannelsListFragment extends BaseFragment<ChannelsListPresenter, Ma
     private PublishSubject<Void> completeMenuItemPublisher = PublishSubject.create();
 
     private boolean isCreateNewChannelState;
+
+    private List<Channel> channels;
 
     @Override
     protected ChannelsListPresenter getPresenter() {
@@ -143,19 +155,34 @@ public class ChannelsListFragment extends BaseFragment<ChannelsListPresenter, Ma
 
     @Override
     public void showChannelsList(List<Channel> channels) {
+        this.channels = channels;
         ChannelsAdapter channelsAdapter = new ChannelsAdapter(channels);
         channelListRecyclerView.setAdapter(channelsAdapter);
     }
 
     @Override
+    public void addChannelToList(Channel channel) {
+        Log.d(App.FILTER_TAG, "Channel added: " + channel.getName());
+        channels.add(channel);
+        channelListRecyclerView.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
     public String getChannelname() {
-        //// TODO: 17/08/16 implement it
-        return null;
+        return channelNameInput.getText().toString();
     }
 
     @Override
     public String getChannelDescription() {
-        //// TODO: 17/08/16 implement it
-        return null;
+        return channelDescriptionInput.getText().toString();
     }
+
+    @Override
+    public void clearInputs() {
+        channelNameInput.setText("");
+        channelDescriptionInput.setText("");
+
+    }
+
+
 }

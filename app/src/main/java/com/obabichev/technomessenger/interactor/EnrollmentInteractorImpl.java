@@ -32,21 +32,14 @@ public class EnrollmentInteractorImpl implements EnrollmentInteractor {
     @Inject
     UserRepository userRepository;
 
-    public EnrollmentInteractorImpl() {
+    EnrollmentInteractorImpl() {
         App.getComponent().inject(this);
     }
 
     @Override
     public Observable<Void> register(RegisterCredentionals credentionals) {
 
-        /*Observable<Void> result = responseService.getSubjectForResponses(RegisterResponse.class)
-                .flatMap(new Func1<RegisterResponse, Observable<Void>>() {
-                    @Override
-                    public Observable<Void> call(RegisterResponse registerResponse) {
-
-                        return Observable.just(null);
-                    }
-                });*/
+        //// TODO: 19/08/16 also there is register response
 
         Observable<Void> result = responseService.getSubjectForResponses(AuthResponse.class)
                 .flatMap(new Func1<AuthResponse, Observable<Void>>() {
@@ -56,7 +49,8 @@ public class EnrollmentInteractorImpl implements EnrollmentInteractor {
                         App.sid = authResponse.getSid();
                         return Observable.just(null);
                     }
-                });
+                })
+                .first();
 
         RegisterRequest request = new RegisterRequest();
         request.setLogin(credentionals.getCid());

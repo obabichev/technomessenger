@@ -27,9 +27,12 @@ public interface ChannelsListView extends FragmentView<MainView> {
 
     void showChannelsList(List<Channel> channels);
 
+    void addChannelToList(Channel channel);
+
 
     String getChannelname();
 
     String getChannelDescription();
 
+    void clearInputs();
 }

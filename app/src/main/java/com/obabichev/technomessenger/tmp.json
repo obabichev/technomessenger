@@ -1,0 +1,39 @@
+{
+  "action": "channellist",
+  "data": {
+    "channels": [
+      {
+        "chid": "2fb1c5cf58867b5bbc9a1b145a86f3a0",
+        "name": "yy",
+        "descr": "y",
+        "online": 0
+      },
+      {
+        "chid": "88275444acdf629e4c460bd59958f81a",
+        "name": "NAME_OF_CHANNEL",
+        "descr": "DESCRIPTION_OF_CHANNEL",
+        "online": 0
+      },
+      {
+        "chid": "3d067bedfe2f4677470dd6ccf64d05ed",
+        "name": "Public",
+        "descr": "Public",
+        "online": 0
+      },
+      {
+        "chid": "7694f4a66316e53c8cdd9d9954bd611d",
+        "name": "q",
+        "descr": "q",
+        "online": 0
+      },
+      {
+        "chid": "f1290186a5d0b1ceab27f4e77c0c5d68",
+        "name": "w",
+        "descr": "w",
+        "online": 0
+      }
+    ],
+    "status": 0,
+    "error": "OK"
+  }
+}

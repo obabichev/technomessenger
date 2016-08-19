@@ -15,9 +15,11 @@ import com.obabichev.technomessenger.view.activity.MainView;
 import com.obabichev.technomessenger.view.fragment.ChannelsListView;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
 /**
@@ -99,12 +101,23 @@ public class ChannelsListPresenter extends BaseFragmentPresenter<ChannelsListVie
             }
         });
 
-        view.getCompleteMenuItemClicks().subscribe(new Action1<Void>() {
-            @Override
-            public void call(Void aVoid) {
-                view.switchToChannelsListState();
-            }
-        });
+        view.getCompleteMenuItemClicks()
+                .debounce(1, TimeUnit.SECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        channelInteractor.createChannel(view.getChannelname(), view.getChannelDescription())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Action1<Channel>() {
+                                    @Override
+                                    public void call(Channel channel) {
+                                        view.switchToChannelsListState();
+                                        view.clearInputs();
+                                        view.addChannelToList(channel);
+                                    }
+                                });
+                    }
+                });
     }
 
     @Override
